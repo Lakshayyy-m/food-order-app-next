@@ -8,7 +8,7 @@ const manrope = Manrope({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Lomato",
   description: "This is a food ordering app",
-  icons: { icon: "/icons/favicon.svg" },
+  icons: { icon: "/icons/logo.svg" },
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
       }}
     >
       <html lang="en">
-        <body className={manrope.className}>{children}</body>
+        <body className={`${manrope.className} bg-light-1`}>{children}</body>
       </html>
     </ClerkProvider>
   );
