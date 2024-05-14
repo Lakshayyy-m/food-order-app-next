@@ -74,7 +74,7 @@ const Navbar = () => {
             </SignedOut>
           </motion.div>
           <motion.div
-            className="max-md:hidden"
+            className="max-md:hidden flex "
             whileHover={{ scale: 1.04 }}
             whileTap={{ scale: 1 }}
           >
