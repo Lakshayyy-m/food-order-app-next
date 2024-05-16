@@ -11,4 +11,5 @@ const foodItemSchema = new mongoose.Schema({
   preparation_time: String,
 });
 
-export const FoodItem = mongoose.model("food_items", foodItemSchema);
+export const FoodItem =
+  mongoose.models.food_items || mongoose.model("food_items", foodItemSchema);

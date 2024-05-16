@@ -62,7 +62,6 @@ export default function Home() {
           Explore more in our menu
         </Link>
       </h3>
-      {/* //!Show some food items here, Some of our best dishes section sort of thing */}
       <h1 className="w-full text-5xl font-bold flex justify-center mt-20">
         Why us
       </h1>

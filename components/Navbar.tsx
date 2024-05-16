@@ -26,10 +26,7 @@ const Navbar = () => {
       </div>
       <div className="flex gap-10 font-semibold max-md:hidden">
         <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 1 }}>
-          <Link
-            href={"/"}
-            className={cn({ "text-red-1": pathname.startsWith("/") })}
-          >
+          <Link href={"/"} className={cn({ "text-red-1": pathname === "/" })}>
             Home
           </Link>
         </motion.div>
