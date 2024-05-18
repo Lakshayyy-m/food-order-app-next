@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import { clerkClient, WebhookEvent } from "@clerk/nextjs/server";
 import { createUser } from "@/actions/user.action";
 import { NextResponse } from "next/server";
+import { createCart } from "@/actions/cart.action";
 
 //!you left this in between becuase it requires deployment, complete it later ache se
 
@@ -82,6 +83,8 @@ export async function POST(req: Request) {
         },
       });
     }
+    const newCart = await createCart(newUser._id);
+    console.log(newCart);
 
     return NextResponse.json({ message: "New user created", user: newUser });
   }

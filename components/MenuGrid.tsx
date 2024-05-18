@@ -13,7 +13,7 @@ const MenuGrid = ({ foodItems }: { foodItems: FoodItemType[] }) => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.05 * index }}
-          className="col-span-3 "
+          className="col-span-3 max-md:col-span-12"
         >
           <MenuItem item={foodItem} />
         </motion.div>
