@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const foodItemSchema = new mongoose.Schema({
+const FoodItemSchema = new mongoose.Schema({
   name: String,
   imageUrl: String,
   price: Number,
@@ -11,5 +11,7 @@ const foodItemSchema = new mongoose.Schema({
   preparation_time: String,
 });
 
+// const FoodItemModel = mongoose.model("food_items", FoodItemSchema)
+
 export const FoodItem =
-  mongoose.models.food_items || mongoose.model("food_items", foodItemSchema);
+  mongoose.models?.food_items || mongoose.model("food_items", FoodItemSchema);

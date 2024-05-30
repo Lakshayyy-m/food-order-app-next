@@ -1,3 +1,4 @@
+"use server";
 import { connect } from "@/db/db";
 import { FoodItem } from "@/db/FoodItem";
 import { FoodItemType } from "@/lib/types";
@@ -8,7 +9,7 @@ export const getAllFoodItems = async () => {
   try {
     await connect();
     const foodItems: FoodItemType[] = await FoodItem.find();
-    return foodItems;
+    return JSON.stringify(foodItems);
   } catch (error) {
     console.log(error);
   }
@@ -19,7 +20,7 @@ export const getFoodItem = async (id: string) => {
   try {
     await connect();
     const foodItem = await FoodItem.findById(id);
-    return foodItem;
+    return JSON.stringify(foodItem);
   } catch (error) {
     console.log(error);
   }

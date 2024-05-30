@@ -1,10 +1,13 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "./InteractiveButton";
 import Image from "next/image";
 import { Indie_Flower } from "next/font/google";
 import { FoodItemType } from "@/lib/types";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { addItemToCart } from "@/actions/cart.action";
 
 const indie = Indie_Flower({
   subsets: ["latin"],
@@ -13,6 +16,21 @@ const indie = Indie_Flower({
 
 const ItemPageComponent = ({ foodItem }: { foodItem: FoodItemType }) => {
   const [counter, setCounter] = useState(0);
+  const [isDisabled, setIsDisabled] = useState(true);
+
+  const addToCart = async () => {
+    
+    await addItemToCart(foodItem._id, counter);
+    toast("Item added to cart");
+  };
+
+  useEffect(() => {
+    if (counter > 0) {
+      setIsDisabled(false);
+    } else {
+      setIsDisabled(true);
+    }
+  }, [counter]);
 
   return (
     <section
@@ -91,7 +109,13 @@ const ItemPageComponent = ({ foodItem }: { foodItem: FoodItemType }) => {
               -
             </Button>
           </div>
-          <Button className="font-bold">+ Add to Bag</Button>
+          <Button
+            className={cn("font-bold", { "text-gray-500": isDisabled })}
+            onClick={addToCart}
+            disabled={isDisabled}
+          >
+            + Add to Cart
+          </Button>
         </motion.div>
       </div>
     </section>

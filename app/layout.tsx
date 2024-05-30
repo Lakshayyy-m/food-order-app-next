@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import { Toaster } from "@/components/ui/sonner";
+import QueryProvider from "@/providers/QueryProvider";
 
 const manrope = Manrope({ subsets: ["latin"] });
 
@@ -28,7 +30,12 @@ export default function RootLayout({
       }}
     >
       <html lang="en">
-        <body className={`${manrope.className} bg-light-1`}>{children}</body>
+        <body className={`${manrope.className} bg-light-1`}>
+          <QueryProvider>
+            {children}
+            <Toaster />
+          </QueryProvider>
+        </body>
       </html>
     </ClerkProvider>
   );

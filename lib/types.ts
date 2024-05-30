@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 export type FoodItemType = {
-  _id: mongoose.Schema.Types.ObjectId;
+  _id: string;
   name: string;
   imageUrl: string;
   price: number;
@@ -17,8 +17,17 @@ export type CartItem = {
   userId: string;
   productList: [
     {
-      productId: string
+      productId: string;
       quantity: number;
     }
   ];
+};
+
+export type UserType = {
+  _id: string;
+  clerkId: string;
+  email: string;
+  photo: string;
+  firstName: string;
+  lastName: string;
 };
