@@ -6,9 +6,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const InteractiveCartContent = ({ cart }: { cart: any }) => {
   const queryClient = useQueryClient();
-  const { data, error } = useQuery({
+  const { data, error} = useQuery({
     queryKey: ["cart"],
-    queryFn: getCart,
+    queryFn:async () => JSON.parse((await getCart())!),
     initialData: cart,
     staleTime: 0,
   });
@@ -16,7 +16,16 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
   if (error) <h1>An error occured</h1>;
 
   const { mutate, isPending } = useMutation({
-    mutationFn: updateQuantity,
+    mutationFn: ({
+      operation,
+      pid,
+    }: {
+      operation: "increment" | "decrement";
+      pid: string;
+    }) => {
+      console.log(operation, pid);
+      return updateQuantity({ operation, pid });
+    },
     onMutate: async ({ operation, pid }) => {
       await queryClient.cancelQueries({ queryKey: ["cart"] });
       const previousData: any = queryClient.getQueryData(["cart"]);
@@ -45,9 +54,16 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
       queryClient.setQueryData(["cart"], () => context?.previousData);
     },
     onSettled: () => {
-      console.log("running");
-      queryClient.invalidateQueries({ queryKey: ["cart"], refetchType: "all" });
-      // queryClient.refetchQueries({ queryKey: ["cart"], type: "all" });
+      queryClient.refetchQueries(
+        {
+          queryKey: ["cart"],
+          type: "all",
+        },
+        {
+          throwOnError: true,
+        }
+      );
+      // refetch();
     },
   });
 
@@ -57,6 +73,7 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
   ) => {
     mutate({ operation, pid });
   };
+  console.log(typeof data);
   if (data.productList.length === 0) {
     return (
       <div className="p-4 w-full h-full flex justify-center items-center text-gray-700">
@@ -65,7 +82,7 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
     );
   }
   return (
-    <div className="p-4 w-full flex">
+    <div className="p-4 w-full flex justify-center items-center">
       <div className="basis-[70%] w-full flex flex-col gap-10 p-7 px-14">
         {data.productList.map((item: any) => (
           <div key={item.productId._id} className="flex justify-between">
@@ -105,8 +122,8 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
           </div>
         ))}
       </div>
-      <hr className="h-[calc(100vh-400px)] w-[2px] bg-dark-1" />
-      <div className="basis-[30%] w-full flex flex-col justify-start items-center text-4xl font-bold">
+      <hr className="h-[calc(100vh-350px)] w-[2px] bg-dark-1" />
+      <div className="basis-[30%] w-full h-full flex flex-col justify-start items-center text-4xl font-bold">
         Summary
       </div>
     </div>

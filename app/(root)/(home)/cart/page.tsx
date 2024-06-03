@@ -5,7 +5,7 @@ import React, { Suspense } from "react";
 
 const CartPage = async () => {
   const cart = JSON.parse((await getCart())!);
-
+  // console.log(cart);
   return (
     <section className="min-h-[calc(100vh-200px)]">
       <h1 className="text-6xl font-extrabold text-center mb-5">

@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { addItemToCart } from "@/actions/cart.action";
+import { useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 const indie = Indie_Flower({
   subsets: ["latin"],
@@ -15,13 +17,23 @@ const indie = Indie_Flower({
 });
 
 const ItemPageComponent = ({ foodItem }: { foodItem: FoodItemType }) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [counter, setCounter] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
 
   const addToCart = async () => {
-    
-    await addItemToCart(foodItem._id, counter);
-    toast("Item added to cart");
+    const response = await addItemToCart(foodItem._id, counter);
+    queryClient.refetchQueries(
+      {
+        queryKey: ["cart"],
+        type: "all",
+      },
+      {
+        throwOnError: true,
+      }
+    );
+    toast(response?.success);
   };
 
   useEffect(() => {
@@ -33,9 +45,15 @@ const ItemPageComponent = ({ foodItem }: { foodItem: FoodItemType }) => {
   }, [counter]);
 
   return (
-    <section
-      className={`min-h-[calc(100vh-100px)] flex w-full py-10 ${indie.className} max-md:flex-col `}
+    <section id="top"
+      className={`min-h-[calc(100vh-100px)] flex w-full py-24 ${indie.className} max-md:flex-col relative`}
     >
+      <Button
+        className="absolute left-10 top-5 hover:bg-stone-300 p-4 rounded-full transition-colors"
+        onClick={() => router.back()}
+      >
+        <Image src={"/icons/leftArrow.svg"} width={30} height={30} alt="back" />
+      </Button>
       <motion.div
         className="basis-[50%] h-full flex justify-end items-center max-md:justify-center"
         initial={{ opacity: 0, x: 30 }}

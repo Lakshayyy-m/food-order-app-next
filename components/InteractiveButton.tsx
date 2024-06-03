@@ -10,7 +10,7 @@ const Button = ({
   disabled,
 }: {
   children: ReactNode;
-  className: string;
+  className?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
 }) => {
@@ -21,6 +21,7 @@ const Button = ({
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 1 }}
       disabled={disabled}
+      type="button"
     >
       {children}
     </motion.button>

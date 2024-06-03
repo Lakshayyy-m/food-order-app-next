@@ -6,9 +6,8 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 
 const MenuItem = ({ item }: { item: FoodItemType }) => {
-
   return (
-    <Link href={`/menu/${item._id}`}>
+    <Link href={`/menu/${item._id}#top`}>
       <motion.div
         className="w-full flex flex-col gap-4 bg-light-2 hover:bg-stone-300 overflow-hidden rounded-xl cursor-pointer"
         whileHover={{ scale: 1.04 }}

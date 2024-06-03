@@ -30,7 +30,7 @@ export const getCart = async () => {
     console.log(error);
   }
 };
-
+//!!!!!PAGE SORT OF REFERESHES ON ADD TO CART AND ALSO THE CART IS NOT GETTING UPDATED ON PRODUCT ADD
 export const addItemToCart = async (pid: string, quantity: number) => {
   try {
     await connect();
@@ -53,12 +53,13 @@ export const addItemToCart = async (pid: string, quantity: number) => {
       cart.productList[index!].quantity += quantity;
       await cart.save();
       revalidatePath("/cart");
-      return;
+      return { success: "Quantity Updated" };
     }
     await Cart.findByIdAndUpdate(cart._id, {
       $push: { productList: { productId: pid, quantity } },
     });
     revalidatePath("/cart");
+    return { success: "Added item to cart" };
   } catch (error) {
     console.log(error);
   }
