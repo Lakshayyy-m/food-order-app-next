@@ -49,7 +49,7 @@ const ItemPageComponent = ({ foodItem }: { foodItem: FoodItemType }) => {
       className={`min-h-[calc(100vh-100px)] flex w-full py-24 ${indie.className} max-md:flex-col relative`}
     >
       <Button
-        className="absolute left-10 top-5 hover:bg-stone-300 p-4 rounded-full transition-colors"
+        className="absolute left-10 max-md:left-5 top-5 hover:bg-stone-300 p-4 rounded-full transition-colors"
         onClick={() => router.back()}
       >
         <Image src={"/icons/leftArrow.svg"} width={30} height={30} alt="back" />
