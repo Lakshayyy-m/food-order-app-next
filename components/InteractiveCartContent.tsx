@@ -6,16 +6,16 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const InteractiveCartContent = ({ cart }: { cart: any }) => {
   const queryClient = useQueryClient();
-  const { data, error} = useQuery({
+  const { data, error } = useQuery({
     queryKey: ["cart"],
-    queryFn:async () => JSON.parse((await getCart())!),
+    queryFn: async () => JSON.parse((await getCart())!),
     initialData: cart,
     staleTime: 0,
   });
 
   if (error) <h1>An error occured</h1>;
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: ({
       operation,
       pid,
@@ -23,7 +23,6 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
       operation: "increment" | "decrement";
       pid: string;
     }) => {
-      console.log(operation, pid);
       return updateQuantity({ operation, pid });
     },
     onMutate: async ({ operation, pid }) => {
@@ -63,7 +62,6 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
           throwOnError: true,
         }
       );
-      // refetch();
     },
   });
 
@@ -73,7 +71,6 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
   ) => {
     mutate({ operation, pid });
   };
-  console.log(typeof data);
   if (data.productList.length === 0) {
     return (
       <div className="p-4 w-full h-full flex justify-center items-center text-gray-700">
@@ -81,21 +78,26 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
       </div>
     );
   }
+  let total = data.productList.reduce((accumulator: number, currVal: any) => {
+    return +(+accumulator) + +(+currVal.quantity * +currVal.productId.price);
+  }, 0);
+  total = Math.round(total * 100) / 100;
+
   return (
-    <div className="p-4 w-full flex justify-center items-center">
-      <div className="basis-[70%] w-full flex flex-col gap-10 p-7 px-14">
+    <div className="p-4 w-full flex justify-center items-center max-lg:flex-col max-lg:gap-10">
+      <div className="basis-[70%] w-full flex flex-col gap-10 p-7 px-14 max-sm:px-4">
         {data.productList.map((item: any) => (
           <div key={item.productId._id} className="flex justify-between">
             <div className="flex flex-col gap-5">
-              <p className="text-3xl font-bold">{item.productId.name}</p>
+              <p className="text-3xl font-bold max-md:text-xl ">{item.productId.name}</p>
               <p className="text-lg italic text-gray-600">
                 $ {item.productId.price.toString()}
               </p>
             </div>
             <div>
-              <div className="flex justify-center gap-10">
+              <div className="flex justify-center gap-10 max-sm:gap-5 items-center">
                 <Button
-                  className="font-bold text-3xl p-2"
+                  className="font-bold text-3xl p-2 max-sm:text-2xl border-red-1 border rounded-full h-[25px] w-[25px] flex justify-center items-center hover:bg-red-1 hover:text-white transition-colors"
                   onClick={() =>
                     changeQuantity("increment", item.productId._id.toString())
                   }
@@ -104,13 +106,13 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
                 </Button>
                 <input
                   type="number"
-                  className="w-16 text-2xl p-2 font-bold bg-light-1 text-center"
+                  className="w-16 text-2xl p-2 font-bold bg-light-1 text-center max-md:text-xl max-md:w-10"
                   disabled
                   min="0"
                   value={item.quantity}
                 />
                 <Button
-                  className="font-bold text-3xl"
+                  className="font-bold text-3xl max-sm:text-2xl  border-red-1 border rounded-full h-[25px] w-[25px] flex justify-center items-center hover:bg-red-1 hover:text-white transition-colors"
                   onClick={() =>
                     changeQuantity("decrement", item.productId._id.toString())
                   }
@@ -122,9 +124,25 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
           </div>
         ))}
       </div>
-      <hr className="h-[calc(100vh-350px)] w-[2px] bg-dark-1" />
-      <div className="basis-[30%] w-full h-full flex flex-col justify-start items-center text-4xl font-bold">
-        Summary
+      <hr className="h-[calc(100vh-250px)] w-[2px] bg-dark-1 max-lg:w-[80%] max-lg:h-[2px]" />
+      <div className="basis-[30%] w-full h-full flex flex-col justify-start items-center text-4xl font-bold gap-10">
+        <h1 className="font-semibold">Summary</h1>
+        <div className="flex w-full justify-between px-9">
+          <p className="font-thin text-xl italic">Subtotal:</p>
+          <p className="font-thin text-xl italic">${total}</p>
+        </div>
+        <div className="flex w-full justify-between px-9">
+          <p className="font-thin text-xl italic">Shipping:</p>
+          <p className="font-thin text-xl italic">$25</p>
+        </div>
+        <hr className="h-[2px] bg-black w-[80%]" />
+        <div className="flex w-full justify-between px-9">
+          <p className="font-thin text-xl italic">Total:</p>
+          <p className="font-thin text-xl italic">${total + 25}</p>
+        </div>
+        <Button className="mt-10 w-[80%] max-xl:text-lg text-xl bg-red-1 py-4 px-6 rounded-full text-light-1">
+          Proceed to checkout
+        </Button>
       </div>
     </div>
   );

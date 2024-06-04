@@ -6,7 +6,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <section className="w-full flex bg-dark-1 py-10 max-lg:flex-col max-lg:px-5 max-lg:gap-10 text-center">
+    <section className="w-full flex bg-dark-1 py-10 max-lg:flex-col max-lg:px-5 max-lg:gap-10 text-center mt-20">
       <div className="flex flex-col basis-[50%]">
         <div className="flex gap-4 items-center h-[80px] py-6 px-8 text-light-1">
           <Image src={"/icons/logo.svg"} alt="lomato" width={40} height={40} />
