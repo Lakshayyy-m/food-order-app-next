@@ -3,8 +3,11 @@ import React from "react";
 import Button from "./InteractiveButton";
 import { getCart, updateQuantity } from "@/actions/cart.action";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import getStripe from "@/lib/getStripe";
+import { useUser } from "@clerk/nextjs";
 
 const InteractiveCartContent = ({ cart }: { cart: any }) => {
+  const { user } = useUser();
   const queryClient = useQueryClient();
   const { data, error } = useQuery({
     queryKey: ["cart"],
@@ -83,13 +86,33 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
   }, 0);
   total = Math.round(total * 100) / 100;
 
+  const proceedToCheckout = async () => {
+    const stripe = await getStripe();
+    console.log(data.productList)
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        productList: data.productList,
+        userId: user?.id,
+        email: user?.emailAddresses[0].emailAddress,
+      }),
+    });
+    const session = await response.json();
+    await stripe?.redirectToCheckout({ sessionId: session.id });
+  };
+
   return (
     <div className="p-4 w-full flex justify-center items-center max-lg:flex-col max-lg:gap-10">
       <div className="basis-[70%] w-full flex flex-col gap-10 p-7 px-14 max-sm:px-4">
         {data.productList.map((item: any) => (
           <div key={item.productId._id} className="flex justify-between">
             <div className="flex flex-col gap-5">
-              <p className="text-3xl font-bold max-md:text-xl ">{item.productId.name}</p>
+              <p className="text-3xl font-bold max-md:text-xl ">
+                {item.productId.name}
+              </p>
               <p className="text-lg italic text-gray-600">
                 $ {item.productId.price.toString()}
               </p>
@@ -140,7 +163,10 @@ const InteractiveCartContent = ({ cart }: { cart: any }) => {
           <p className="font-thin text-xl italic">Total:</p>
           <p className="font-thin text-xl italic">${total + 25}</p>
         </div>
-        <Button className="mt-10 w-[80%] max-xl:text-lg text-xl bg-red-1 py-4 px-6 rounded-full text-light-1">
+        <Button
+          className="mt-10 w-[80%] max-xl:text-lg text-xl bg-red-1 py-4 px-6 rounded-full text-light-1"
+          onClick={proceedToCheckout}
+        >
           Proceed to checkout
         </Button>
       </div>

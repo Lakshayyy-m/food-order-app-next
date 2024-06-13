@@ -9,8 +9,8 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="">
-      <section className="flex w-full max-md:flex-col">
-        <div className="md:ps-40 pt-20 basis-[50%] ps-7">
+      <section className="flex w-full max-md:flex-col md:justify-center md:items-center ">
+        <div className="md:ps-40 pt-20 lg:basis-[50%] ps-7">
           <h1 className="font-extrabold text-7xl max-md:text-5xl">
             It&apos;s not just Food, It&apos;s an Experience.
           </h1>
@@ -27,7 +27,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="pt-10 max-md:px-5">
+        <div className="pt-10 max-md:px-5 px-5 max-lg:hidden">
           <Image
             src={"/images/food.jpg"}
             alt="Food"
