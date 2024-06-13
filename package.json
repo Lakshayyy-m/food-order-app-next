@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.0.8",
+    "@emailjs/browser": "^4.3.3",
     "@radix-ui/react-dialog": "^1.0.5",
     "@stripe/stripe-js": "^3.5.0",
     "@tanstack/react-query": "^5.37.1",
@@ -26,6 +27,7 @@
     "react": "^18",
     "react-dom": "^18",
     "react-loader-spinner": "^6.1.6",
+    "resend": "^3.3.0",
     "sonner": "^1.4.41",
     "stripe": "^15.10.0",
     "svix": "^1.24.0",

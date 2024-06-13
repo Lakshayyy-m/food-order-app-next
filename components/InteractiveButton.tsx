@@ -8,11 +8,13 @@ const Button = ({
   className,
   onClick,
   disabled,
+  type = "button",
 }: {
   children: ReactNode;
   className?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
   disabled?: boolean;
+  type?: "button" | "submit";
 }) => {
   return (
     <motion.button
@@ -21,7 +23,7 @@ const Button = ({
       whileHover={{ scale: 1.04 }}
       whileTap={{ scale: 1 }}
       disabled={disabled}
-      type="button"
+      type={type}
     >
       {children}
     </motion.button>

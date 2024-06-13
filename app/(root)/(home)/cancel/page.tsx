@@ -9,10 +9,13 @@ const CancelPage = () => {
   useEffect(() => {
     setTimeout(() => {
       router.replace("/");
-    }, 5000);
+    }, 8000);
 
     setInterval(() => {
-      setTime((prev) => prev - 1);
+      setTime((prev) => {
+        if (prev !== 1) return prev - 1;
+        else return prev;
+      });
     }, 1000);
   }, [router]);
 
