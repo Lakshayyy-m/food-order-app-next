@@ -13,7 +13,8 @@ export async function POST(req: Request) {
       line_items: [...priceObjArray],
       mode: "payment",
       success_url: `${req.headers.get("origin")}/success`,
-      cancel_url: `${req.headers.get("origin")}/cart`,
+      cancel_url: `${req.headers.get("origin")}/cancel`,
+      
     });
 
     return NextResponse.json({ id: session.id });

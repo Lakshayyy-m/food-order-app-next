@@ -102,3 +102,18 @@ export const updateQuantity = async ({
     throw error;
   }
 };
+
+export const emptyCart = async () => {
+  try {
+    await connect();
+    const currUser = (await getCurrentUser()) as UserType;
+    const cart = await Cart.findOne({
+      userId: currUser._id,
+    });
+    cart.productList = [];
+    cart.save();
+    revalidatePath("/cart");
+  } catch (error) {
+    console.log(error);
+  }
+};
