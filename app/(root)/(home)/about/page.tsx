@@ -20,7 +20,7 @@ const AboutPage = () => {
           transition={{ duration: 0.6, delay: 1 }}
           className="text-2xl font-semibold w-[80vw] text-center max-lg:text-xl"
         >
-          I&apos;m a Full Stack Web developer, I work with the T3 Stach - NextJS
+          I&apos;m a Full Stack Web developer, I work with the T3 Stack - NextJS
           - TypeScript - TailwindCSS
         </motion.p>
         <motion.p
